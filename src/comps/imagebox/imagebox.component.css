@@ -1,0 +1,30 @@
+.ng-hide {
+    display: none;
+}
+
+.imagechange {
+    position: relative;
+    top: 18px;
+    left: 10px;
+}
+
+.imagecancel {
+    position: relative;
+    top: -10px;
+    left: 60px;
+}
+
+.rgbBars {
+    margin: 20px;
+}
+
+.slider {
+    display: block;
+    max-width: 100px;
+    width: 100px;
+}
+
+.colorwidth {
+    width: 90px;
+    display: inline-block;
+}

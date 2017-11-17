@@ -1,0 +1,79 @@
+<mat-card>
+    <form [formGroup]="userForm" novalidate>
+        <mat-card-header>
+            <mat-card-title>User Details</mat-card-title>
+            <mat-card-subtitle>
+            </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            <mat-grid-list cols="2">
+                <mat-grid-tile>
+                    <app-imagebox formControlName="userImage"></app-imagebox>
+                    <div formGroupName="information">
+                        <mat-form-field class="inp">
+                            <input matInput type="text" placeholder="Id (nick)" formControlName="nickName">
+                        </mat-form-field>
+                        <br />
+                        <mat-form-field class="inp">
+                            <input matInput type="text" placeholder="First Name" formControlName="firstName">
+                        </mat-form-field>
+                        <br />
+                        <mat-form-field class="inp">
+                            <input matInput type="text" placeholder="Last Name" formControlName="lastName">
+                        </mat-form-field>
+                        <br />
+                        <mat-form-field class="inp">
+                            <input matInput type="text" placeholder="Email" formControlName="email">
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="contained">
+                        <h3> <span>Projects</span> </h3>
+                        <mat-list class="lst">
+                            <mat-list-item class="listheader">
+                                <p class="name">Name</p>
+                                <p class="name ">Role</p>
+                            </mat-list-item>
+                            <mat-button-toggle-group #group="matButtonToggleGroup" class="majortoggler" (change)="allRoles($event.value)">
+                                <mat-button-toggle value="0">
+                                    none
+                                </mat-button-toggle>
+                                <mat-button-toggle value="1">
+                                    editor
+                                </mat-button-toggle>
+                                <mat-button-toggle value="2">
+                                    admin
+                                </mat-button-toggle>
+                            </mat-button-toggle-group>
+                            <div class="rows" formArrayName="roles">
+                                <mat-list-item class="denzer" *ngFor="let role of formRoles.controls;let i=index" [formGroupName]="i">
+                                    <p class="name"> {{projects[i].name}} </p>
+                                    <mat-button-toggle-group #group="matButtonToggleGroup" formControlName="role" class="toggler">
+                                        <mat-button-toggle value="0">
+                                            none
+                                        </mat-button-toggle>
+                                        <mat-button-toggle value="1">
+                                            editor
+                                        </mat-button-toggle>
+                                        <mat-button-toggle value="2">
+                                            admin
+                                        </mat-button-toggle>
+                                    </mat-button-toggle-group>
+                                </mat-list-item>
+                            </div>
+                        </mat-list>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </mat-card-content>
+
+
+        <mat-card-actions>
+            <button mat-raised-button (click)="save()"><mat-icon class="md-18">done</mat-icon> SAVE </button>
+            <button mat-raised-button (click)="cancel()"><mat-icon class="md-18">cancel</mat-icon> CANCEL</button>
+
+        </mat-card-actions>
+    </form>
+</mat-card>
