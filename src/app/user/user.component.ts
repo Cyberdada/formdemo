@@ -3,6 +3,7 @@ import { MatList, MatListItem, MatButton, MatIcon } from '@angular/material';
 import {MatCard} from '@angular/material/card';
 import {MatGridList} from '@angular/material/grid-list';
 import { FormArray, FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
 
 import { ProjectService } from '../project.service';
 
@@ -14,8 +15,8 @@ import { ProjectService } from '../project.service';
 })
 export class UserComponent implements OnInit {
   userForm: FormGroup;
-  projects: any[];
-formvalue: any;
+  projects: Observable<any>;
+  formvalue: any;
   toggleValues = [{name: 'None', value: 0 }, {name: 'Editor', value: 1 }, {name: 'Admin', value: 2 } ];
   constructor(private fb: FormBuilder, private projectService: ProjectService) { }
 
@@ -29,13 +30,12 @@ formvalue: any;
         middleName: '',
         email: ''
       }),
-      toggler: this.fb.group({})
+      toggler: ['']
     });
-
-    this.projectService.projects().subscribe( (retval: any[] ) => {
-      this.projects = retval;
-    });
-  }
+     this.projects = this.projectService.projects();
+   // this.projectService.projects().subscribe( (retval: any[] ) => {
+    //  this.projects = retval;
+    }
 
 
 

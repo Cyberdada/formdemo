@@ -31,8 +31,8 @@
                 <mat-grid-tile>
 
                     <div class="contained">
-                        <h3> <span>Projects</span> </h3>
-                        <app-grouptoggler formGroupName="toggler" [toggleValues]="toggleValues" [toggleList]="projects"></app-grouptoggler>
+                        <h3>Projects</h3>
+                        <app-grouptoggler formControlName="toggler" [toggleValues]="toggleValues">{{projects | async}} </app-grouptoggler>
                     </div>
                 </mat-grid-tile>
             </mat-grid-list>
