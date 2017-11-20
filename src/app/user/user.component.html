@@ -29,9 +29,11 @@
                     </div>
                 </mat-grid-tile>
                 <mat-grid-tile>
+
                     <div class="contained">
                         <h3> <span>Projects</span> </h3>
-                        <mat-list class="lst">
+                        <app-grouptoggler formArrayName="roles" [theFormArray]="formRoles" (onHeadToggle)="allRoles($event)" [toggleValues]="toggleValues" [toggleList]="projects"></app-grouptoggler>
+                        <!--     <mat-list class="lst">
                             <mat-list-item class="listheader">
                                 <p class="name">Name</p>
                                 <p class="name ">Role</p>
@@ -63,7 +65,7 @@
                                     </mat-button-toggle-group>
                                 </mat-list-item>
                             </div>
-                        </mat-list>
+                        </mat-list>  -->
                     </div>
                 </mat-grid-tile>
             </mat-grid-list>

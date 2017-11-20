@@ -1,9 +1,9 @@
-<mat-list class="lst">
+<mat-list class="lst" [formGroup]="toggler">
     <mat-list-item class="listheader">
-        <p class="name">Name</p>
-        <p class="name ">Role</p>
+        <p class="col">Name</p>
+        <p class="col ">Role</p>
     </mat-list-item>
-    <mat-button-toggle-group #group="matButtonToggleGroup" class="majortoggler" (change)="allRoles($event.value)">
+    <mat-button-toggle-group #group="matButtonToggleGroup" class="head" (change)="allRoles($event.value)">
         <mat-button-toggle value="0">
             none
         </mat-button-toggle>
@@ -14,10 +14,10 @@
             admin
         </mat-button-toggle>
     </mat-button-toggle-group>
-    <div class="rows" formArrayName="roles">
-        <mat-list-item class="denzer" *ngFor="let role of formRoles.controls;let i=index" [formGroupName]="i">
-            <p class="name"> {{toggleList[i].name}} </p>
-            <mat-button-toggle-group #group="matButtonToggleGroup" formControlName="role" class="toggler">
+    <div class="rows" *ngIf="theFormArray != undefined">
+        <mat-list-item class="denzer" *ngFor="let role of theFormArray.controls;let i=index" [formGroupName]="i">
+            <p class="col">{{toggleList[i].name}}</p>
+            <mat-button-toggle-group #group="matButtonToggleGroup" formControlName="role" class="row">
                 <mat-button-toggle value="0">
                     none
                 </mat-button-toggle>

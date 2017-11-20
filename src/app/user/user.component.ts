@@ -16,7 +16,7 @@ export class UserComponent implements OnInit {
   userForm: FormGroup;
   projects: any[];
 
-
+ toggleValues = [{name: 'None', value: 0 }, {name: 'Editor', value: 1 }, {name: 'Admin', value: 2 } ];
   constructor(private fb: FormBuilder, private projectService: ProjectService) { }
 
   ngOnInit() {
@@ -40,7 +40,7 @@ export class UserComponent implements OnInit {
 
 
   allRoles(nr: string) {
-    const p = this.projects.map(project => this.fb.group({ id: 0, role: nr, pid: project.id }))
+    const p = this.projects.map(project => this.fb.group({ id: 0, role: nr, pid: project.id }));
     const parr = this.fb.array(p);
     this.userForm.setControl('roles', parr);
   }
