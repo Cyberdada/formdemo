@@ -15,8 +15,8 @@ import { ProjectService } from '../project.service';
 export class UserComponent implements OnInit {
   userForm: FormGroup;
   projects: any[];
-
- toggleValues = [{name: 'None', value: 0 }, {name: 'Editor', value: 1 }, {name: 'Admin', value: 2 } ];
+formvalue: any;
+  toggleValues = [{name: 'None', value: 0 }, {name: 'Editor', value: 1 }, {name: 'Admin', value: 2 } ];
   constructor(private fb: FormBuilder, private projectService: ProjectService) { }
 
   ngOnInit() {
@@ -29,28 +29,19 @@ export class UserComponent implements OnInit {
         middleName: '',
         email: ''
       }),
-      roles: this.fb.array([])
+      toggler: this.fb.group({})
     });
 
     this.projectService.projects().subscribe( (retval: any[] ) => {
       this.projects = retval;
-      this.allRoles('0');
     });
   }
 
 
-  allRoles(nr: string) {
-    const p = this.projects.map(project => this.fb.group({ id: 0, role: nr, pid: project.id }));
-    const parr = this.fb.array(p);
-    this.userForm.setControl('roles', parr);
-  }
 
-  get formRoles(): FormArray {
-    return this.userForm.get('roles') as FormArray;
-  }
 
   save() {
-
+    this.formvalue = JSON.stringify(this.userForm.value);
   }
 
   cancel() {
