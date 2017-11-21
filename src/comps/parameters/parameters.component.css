@@ -1,0 +1,15 @@
+.name {
+    min-width: 200px;
+}
+
+.type {
+    min-width: 200px;
+}
+
+.value {
+    min-width: 130px;
+}
+
+.listheader {
+    font-weight: bold;
+}

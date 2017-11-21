@@ -1,0 +1,32 @@
+<div class="contained" [formGroup]="paramGroup">
+    <h3>Parameters
+        <button type="button" mat-mini-fab (click)="addParameter(0,'','','')">
+            <mat-icon class="md-18">add</mat-icon>
+          </button></h3>
+    <mat-list class="lst">
+        <mat-list-item *ngIf="formParameters.controls.length > 0" class="listheader">
+            <p class="name">Name</p>
+            <p class="type">Type</p>
+            <p class="value ">Value</p>
+        </mat-list-item>
+        <div class="rows" formArrayName="parameters">
+            <mat-list-item class="denzer" *ngFor="let parameter of formParameters.controls;let i=index" [formGroupName]="i">
+                <mat-form-field floatPlaceholder="never" class="name">
+                    <input matInput type="text" placeholder="Name" formControlName="name">
+                </mat-form-field>
+                <mat-form-field floatPlaceholder="never" class="type">
+                    <input matInput type="text" placeholder="Type" formControlName="type" [matAutocomplete]="autox">
+                </mat-form-field>
+                <mat-autocomplete #autox="matAutocomplete" [displayWith]="paraDisplay">
+                    <mat-option [value]="0">number</mat-option>
+                    <mat-option [value]="1">string</mat-option>
+                    <mat-option [value]="2">array</mat-option>
+                </mat-autocomplete>
+                <mat-form-field floatPlaceholder="never" class="value">
+                    <input matInput type="text" placeholder="Value" formControlName="value">
+                </mat-form-field>
+                <button type="button" mat-button (click)="removeParameter(i)">remove</button>
+            </mat-list-item>
+        </div>
+    </mat-list>
+</div>

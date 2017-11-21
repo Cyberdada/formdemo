@@ -10,18 +10,21 @@ import {
   templateUrl: './grouptoggler.component.html',
   styleUrls: ['./grouptoggler.component.css'],
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => GrouptogglerComponent), multi: true }
+    { provide: NG_VALUE_ACCESSOR, useExisting: GrouptogglerComponent, multi: true }
   ]
 })
+
 export class GrouptogglerComponent implements OnInit, OnChanges {
   @Input() toggleValues: NameValue[];
   @Input() toggleList: any[];
 
-  value: any;
+  // fdata: string;
+
   toggler: FormGroup;
   constructor(private fb: FormBuilder) { }
   ngOnInit() {
     this.createForm();
+    // this.toggler.valueChanges.subscribe((value: string) => { this.fdata = JSON.stringify(value) });
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
@@ -32,7 +35,6 @@ export class GrouptogglerComponent implements OnInit, OnChanges {
     const p = this.toggleList.map(project => this.fb.group({ id: 0, role: nr, pid: project.id }));
     const parr = this.fb.array(p);
     this.toggler.setControl('roles', parr);
-    this.propagateChange(this.toggler.value);
   }
 
   createForm() {
@@ -47,19 +49,12 @@ export class GrouptogglerComponent implements OnInit, OnChanges {
 
   // Form Control Code
   writeValue(val: any) {
-   val && this.toggler.setValue(val, { emitEvent: false });
+    val && this.toggler.setValue(val, { emitEvent: false });
   }
-  propagateChange = (_: any) => { };
 
   registerOnChange(fn) {
-    this.propagateChange = fn;
-  }
-
-  setDisabledState(disabled: boolean) {
-    disabled ? this.toggler.disable()
-             : this.toggler.enable();
+    this.toggler.valueChanges.subscribe(fn);
   }
 
   registerOnTouched() { }
-
 }

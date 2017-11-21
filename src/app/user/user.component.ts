@@ -15,7 +15,7 @@ import { ProjectService } from '../project.service';
 })
 export class UserComponent implements OnInit {
   userForm: FormGroup;
-  projects: Observable<any>;
+  projects: any[];
   formvalue: any;
   toggleValues = [{name: 'None', value: 0 }, {name: 'Editor', value: 1 }, {name: 'Admin', value: 2 } ];
   constructor(private fb: FormBuilder, private projectService: ProjectService) { }
@@ -30,12 +30,14 @@ export class UserComponent implements OnInit {
         middleName: '',
         email: ''
       }),
-      toggler: ['']
+      toggler: [''],
+      parameters: ['']
     });
-     this.projects = this.projectService.projects();
-   // this.projectService.projects().subscribe( (retval: any[] ) => {
-    //  this.projects = retval;
-    }
+
+    this.projectService.projects().subscribe( (retval: any[] ) => {
+      this.projects = retval;
+    });
+  }
 
 
 

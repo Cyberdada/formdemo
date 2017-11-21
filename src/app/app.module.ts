@@ -5,7 +5,8 @@ import { NgModule } from '@angular/core';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MatListModule, MatButtonModule, MatIconModule, MatLineModule, MatInputModule,
-  MatButtonToggleModule} from '@angular/material';
+  MatButtonToggleModule,  MatAutocompleteModule, MatSelectModule,
+  MatCheckboxModule} from '@angular/material';
   import {MatSliderModule} from '@angular/material/slider';
   import {MatCardModule} from '@angular/material/card';
   import {MatGridListModule} from '@angular/material/grid-list';
@@ -14,13 +15,15 @@ import { UserComponent } from './user/user.component';
 
 import { ImageboxComponent } from '../comps/imagebox/imagebox.component';
 import { GrouptogglerComponent } from '../comps/grouptoggler/grouptoggler.component';
+import { ParametersComponent } from '../comps/parameters/parameters.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ImageboxComponent,
     UserComponent,
-    GrouptogglerComponent
+    GrouptogglerComponent,
+    ParametersComponent
   ],
   imports: [
     HttpClientModule,
@@ -36,7 +39,11 @@ import { GrouptogglerComponent } from '../comps/grouptoggler/grouptoggler.compon
     MatLineModule,
     MatInputModule,
     MatSliderModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatAutocompleteModule,
+    MatSelectModule,
+    MatCheckboxModule
+
   ],
 
   providers: [],
