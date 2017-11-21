@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormBuilder, FormGroup, Validators,
-  ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS,  FormsModule, AbstractControl } from '@angular/forms';
+import {
+  FormArray, FormControl, FormBuilder, FormGroup, Validators,
+  ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormsModule, AbstractControl
+} from '@angular/forms';
 
 import {
   MatList, MatListItem, MatButton, MatIcon, MatRadioGroup, MatRadioButton,
@@ -27,10 +29,12 @@ export class ParametersComponent implements OnInit {
   }
 
   validate(ctrl: AbstractControl) {
-    if (ctrl.value === '') {return true; }
+    if (ctrl.value === '') { return null; }
 
-   const retval = ctrl.value.parameters.some(itm => itm.name === '');
-return !retval;
+    const retval = ctrl.value.parameters.some(itm => itm.name === '');
+    if (retval) {
+      return { validateEmail: { valid: false } };
+    }
 
   }
 
@@ -43,7 +47,7 @@ return !retval;
   addParameter(id: number, name: string, type: string, value: string) {
 
     this.formParameters.push(
-      this.fb.group({ name: [name, Validators.required ], id: id, type: parseInt(type, 10), value: value }));
+      this.fb.group({ name: [name, Validators.required], id: id, type: parseInt(type, 10), value: value }));
 
   }
 
