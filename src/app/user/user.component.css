@@ -2,3 +2,9 @@
     min-width: 50%;
     float: left;
 }
+
+.cont1 {
+    width:300px;
+    max-width: 300px;
+    float: left;
+}
