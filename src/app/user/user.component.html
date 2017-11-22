@@ -33,8 +33,9 @@
         <h3>Projects</h3>
         <app-grouptoggler formControlName="toggler" [toggleValues]="toggleValues" [toggleList]="projects"></app-grouptoggler>
     </div>
-
-    <div>{{formvalue}}</div>
+    <div class="dummy"></div>
+    <div class="contained">{{formvalue}}</div>
+    <div class="dummy"></div>
     <div class="contained">
         <button [disabled]="!userForm.valid" mat-raised-button (click)="save()">
             <mat-icon class="md-18">done</mat-icon> SAVE </button>

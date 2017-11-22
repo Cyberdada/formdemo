@@ -8,6 +8,7 @@ import {
   MatList, MatListItem, MatButton, MatIcon, MatRadioGroup, MatRadioButton,
   MatButtonToggleGroup, MatButtonToggle
 } from '@angular/material';
+import { Validator } from '@angular/forms/src/directives/validators';
 
 
 @Component({
@@ -19,7 +20,7 @@ import {
     { provide: NG_VALIDATORS, useExisting: ParametersComponent, multi: true }
   ]
 })
-export class ParametersComponent implements OnInit {
+export class ParametersComponent implements OnInit, ControlValueAccessor, Validator {
 
   paramGroup: FormGroup;
   constructor(private fb: FormBuilder) { }
@@ -29,12 +30,24 @@ export class ParametersComponent implements OnInit {
   }
 
   validate(ctrl: AbstractControl) {
-    if (ctrl.value === '') { return null; }
-
-    const retval = ctrl.value.parameters.some(itm => itm.name === '');
-    if (retval) {
-      return { validateEmail: { valid: false } };
+    if (this.paramGroup.invalid) {
+      return { validateName: { valid: false } };
     }
+    return null;
+
+    // Doing it by hand, messier, but something like this would be needed
+    // if you where to do your custom validation,
+    // for instance if one of your child controls would be dependent on the
+    // value of another
+
+
+
+    // if (ctrl.value === '') { return null; }
+
+    // const retval = ctrl.value.parameters.some(itm => itm.name === '');
+    // if (retval) {
+    //   return { validateName: { valid: false } };
+    // }
 
   }
 
@@ -62,7 +75,7 @@ export class ParametersComponent implements OnInit {
   paraDisplay(itm: any): string {
     if (itm === 0) { return 'number'; }
     if (itm === 1) { return 'string'; }
-    if (itm === 2) { return 'array'; }
+    if (itm === 2) { return 'boolean'; }
   }
 
   // Form Control Code

@@ -1,9 +1,10 @@
 <div>
     <div class="imagechange">
         <input type="file" class="ng-hide" #fileInput id="input-file-id" (change)="gotFiles($event)" />
-        <a mat-mini-fab><label for="input-file-id"><mat-icon class="md-18">add</mat-icon> </label></a>
-        <a *ngIf="changed" mat-mini-fab (click)="backtrack()">
-            <mat-icon class="md-18">cancel</mat-icon>
+        <a mat-mini-fab><label for="input-file-id">
+          <mat-icon class="md-18">add</mat-icon></label></a>
+        <a *ngIf="changed" mat-mini-fab (click)="backtrack()"><label>
+            <mat-icon class="md-18">cancel</mat-icon></label>
         </a>
     </div>
     <canvas #theCanvas></canvas>
@@ -15,8 +16,9 @@
     <mat-card-header>
         <mat-card-title>RGB Values</mat-card-title>
         <mat-card-subtitle>
-            <span class="colorwidth">Red: {{rgbSliders[0]}} </span><span class="colorwidth">Green: {{rgbSliders[1]}}</span> <span class="colorwidth">Blue: {{rgbSliders[2]}} </span>
-
+            <span class="colorwidth">Red: {{rgbSliders[0]}}</span>
+            <span class="colorwidth">Green: {{rgbSliders[1]}}</span>
+            <span class="colorwidth">Blue: {{rgbSliders[2]}}</span>
             <button mat-raised-button [disabled]="rgbSliders[0] === 0 && rgbSliders[1] === 0 && rgbSliders[2] === 0" (click)="resetSliders()">RESET</button>
         </mat-card-subtitle>
     </mat-card-header>
@@ -26,12 +28,10 @@
     <mat-slider class="slider" id="greenSlider" [max]="255" [min]="-255" [(ngModel)]="rgbSliders[1]" thumbLabel (change)="updateColor()"></mat-slider>
     <label class="slider" for="blueSlider">Blue</label>
     <mat-slider class="slider" id="blueSlider" [max]="255" [min]="-255" [(ngModel)]="rgbSliders[2]" thumbLabel (change)="updateColor()"></mat-slider>
-
     <br />
     <mat-card-actions>
-        <button mat-raised-button [disabled]="rgbSliders[0] === 0 && rgbSliders[1] === 0 && rgbSliders[2] === 0" (click)="applyRgb()"><mat-icon class="md-18">done</mat-icon> APPLY </button>
+        <button mat-raised-button [disabled]="rgbSliders[0] === 0 && rgbSliders[1] === 0 && rgbSliders[2] === 0" (click)="applyRgb()">
+          <mat-icon class="md-18">done</mat-icon>APPLY</button>
         <button mat-raised-button (click)="cancelRgb()"><mat-icon class="md-18">cancel</mat-icon> CANCEL</button>
-
     </mat-card-actions>
-
 </mat-card>

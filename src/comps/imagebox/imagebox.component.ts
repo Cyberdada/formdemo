@@ -1,4 +1,5 @@
-import { Component, Input, ViewChild, ElementRef, OnInit, AfterViewInit, OnChanges, SimpleChanges, forwardRef } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, OnInit,
+  AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { MatList, MatListItem, MatButton, MatIcon } from '@angular/material';
 import {MatCard} from '@angular/material/card';
@@ -13,15 +14,13 @@ import {defaultEmptyImage} from './emptyimage';
 // https://github.com/danschumann/limby-resize/blob/master/lib/canvas_resize.js
 // https://github.com/nodeca/pica
 //
-// @Input() expandoWidth: number;
-// @Input() expandoHeight: number;
 
 @Component({
   selector: 'app-imagebox',
   templateUrl: './imagebox.component.html',
   styleUrls: ['./imagebox.component.css'],
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ImageboxComponent), multi: true }
+    { provide: NG_VALUE_ACCESSOR, useExisting: ImageboxComponent, multi: true }
   ]
 })
 export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccessor, AfterViewInit  {
