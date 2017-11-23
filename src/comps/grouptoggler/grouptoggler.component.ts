@@ -5,10 +5,10 @@ import {
   ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule
 } from '@angular/forms';
 
-interface ToggleItem {
+export interface ToggleItem {
   id: number;
   role: string;
-  projectId: number;
+  extId: number;
   name: string;
 }
 
@@ -22,7 +22,8 @@ interface ToggleItem {
 })
 export class GrouptogglerComponent implements OnInit, ControlValueAccessor {
   @Input() toggleValues: NameValue[];
-  // @Input() toggleList: any[];
+  @Input() nameWidth = 140;
+  @Input() width= 410;
   toggleItems: ToggleItem[] = [];
   toggler: FormGroup;
   constructor(private fb: FormBuilder) { }
@@ -50,7 +51,7 @@ export class GrouptogglerComponent implements OnInit, ControlValueAccessor {
   // Form Control Code
   writeValue(val: ToggleItem[]) {
     this.toggleItems = val;
-    const p  = this.toggleItems.map(itm => this.fb.group({ id: 0, role: itm.role , projectId: itm.projectId }));
+    const p  = this.toggleItems.map(itm => this.fb.group({ id: 0, role: itm.role , extId: itm.extId }));
     this.toggler.setControl('roles', this.fb.array(p));
   }
 

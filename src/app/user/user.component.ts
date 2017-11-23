@@ -31,26 +31,20 @@ export class UserComponent implements OnInit {
         email: ''
       }),
       toggler: [[]],
-      parameters: ['']
+      parameters: [[]]
     });
 
     this.projectService.projects().subscribe( (retval: any[] ) => {
       this.userForm.controls.toggler.patchValue(
-         retval.map(itm =>  ({ id: 0, role: 0, projectId: itm.id, name: itm.name}))
+         retval.map(itm =>  ({ id: 0, role: 0, extId: itm.id, name: itm.name}))
         );
-      // this.projects = retval;
     });
   }
-
-
-
 
   save() {
     this.formvalue = JSON.stringify(this.userForm.value);
   }
 
-  cancel() {
-
-  }
+  cancel() {}
 
 }

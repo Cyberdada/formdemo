@@ -34,21 +34,6 @@ export class ParametersComponent implements OnInit, ControlValueAccessor, Valida
       return { validateName: { valid: false } };
     }
     return null;
-
-    // Doing it by hand, messier, but something like this would be needed
-    // if you where to do your custom validation,
-    // for instance if one of your child controls would be dependent on the
-    // value of another
-
-
-
-    // if (ctrl.value === '') { return null; }
-
-    // const retval = ctrl.value.parameters.some(itm => itm.name === '');
-    // if (retval) {
-    //   return { validateName: { valid: false } };
-    // }
-
   }
 
   createForm() {
@@ -79,8 +64,9 @@ export class ParametersComponent implements OnInit, ControlValueAccessor, Valida
   }
 
   // Form Control Code
-  writeValue(val: any) {
-    val && this.paramGroup.setValue(val, { emitEvent: false });
+  writeValue(val: any[]) {
+    const p = val.map(itm => this.fb.group(
+      { name: [name, Validators.required], id: itm.id, type: parseInt(itm.type, 10), value: itm.value }));
   }
 
   registerOnChange(fn) {

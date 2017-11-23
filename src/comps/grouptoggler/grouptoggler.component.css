@@ -1,21 +1,11 @@
-.col {
-    min-width: 140px;
-    padding-bottom: 10px;
-}
-
 .head {
-    padding-left: 155px;
     margin-left: -16px;
     margin-bottom: 25px;
 }
 
-.lst {
-    width: 400px;
-    padding-top: -10px;
-}
-
 .listheader {
     font-weight: bold;
+    padding-bottom: 12px;
 }
 
 .row {
@@ -24,15 +14,9 @@
 }
 
 .rows {
-    max-height: 300px;
-    height: 300px;
     overflow: auto;
     border: solid;
     border-width: 1px;
-}
-
-.toggler {
-    max-height: 29px;
 }
 
 .mat-list-item {
