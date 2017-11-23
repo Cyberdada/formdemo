@@ -12,7 +12,7 @@
     </mat-list-item>
     <div class="rows" formArrayName="roles">
         <mat-list-item *ngFor="let role of formRoles.controls;let i=index" [formGroupName]="i">
-            <p class="col">{{toggleList[i].name}}</p>
+            <p class="col">{{toggleItems[i].name}}</p>
             <mat-button-toggle-group #group="matButtonToggleGroup" formControlName="role" class="row">
                 <mat-button-toggle *ngFor="let itm of toggleValues" [value]="itm.value">
                     {{itm.name}}

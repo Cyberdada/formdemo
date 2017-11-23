@@ -1,9 +1,16 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChange } from '@angular/core';
 import { NameValue } from '../../app/name-value';
 import {
   FormArray, FormControl, FormGroup, FormBuilder, Validators,
   ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule
 } from '@angular/forms';
+
+interface ToggleItem {
+  id: number;
+  role: string;
+  projectId: number;
+  name: string;
+}
 
 @Component({
   selector: 'app-grouptoggler',
@@ -13,24 +20,21 @@ import {
     { provide: NG_VALUE_ACCESSOR, useExisting:  GrouptogglerComponent, multi: true }
   ]
 })
-export class GrouptogglerComponent implements OnInit, OnChanges, ControlValueAccessor {
+export class GrouptogglerComponent implements OnInit, ControlValueAccessor {
   @Input() toggleValues: NameValue[];
-  @Input() toggleList: any[];
-
+  // @Input() toggleList: any[];
+  toggleItems: ToggleItem[] = [];
   toggler: FormGroup;
   constructor(private fb: FormBuilder) { }
   ngOnInit() {
     this.createForm();
   }
 
-  ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
-    if (changes.toggleList.currentValue !== undefined) { this.allRoles('0'); }
-  }
+
 
   allRoles(nr: string) {
-    const p = this.toggleList.map(project => this.fb.group({ id: 0, role: nr, pid: project.id }));
-    const parr = this.fb.array(p);
-    this.toggler.setControl('roles', parr);
+    this.formRoles.controls.forEach(
+      itm => (itm as FormGroup).controls['role'].setValue(nr) );
   }
 
   createForm() {
@@ -44,8 +48,10 @@ export class GrouptogglerComponent implements OnInit, OnChanges, ControlValueAcc
   }
 
   // Form Control Code
-  writeValue(val: any) {
-   val && this.toggler.setValue(val, { emitEvent: false });
+  writeValue(val: ToggleItem[]) {
+    this.toggleItems = val;
+    const p  = this.toggleItems.map(itm => this.fb.group({ id: 0, role: itm.role , projectId: itm.projectId }));
+    this.toggler.setControl('roles', this.fb.array(p));
   }
 
   registerOnChange(fn) {
