@@ -7,12 +7,68 @@
             <mat-icon class="md-18">cancel</mat-icon></label>
         </a>
     </div>
-    <canvas #theCanvas></canvas>
+    <canvas #theCanvas (keydown)="eatKey($event)"></canvas>
 </div>
+
+
+
 <div *ngIf="changed && !changeRgb">
-    <button mat-button (click)="showRgb()">Change RGB values</button>
+    <p>Original Width: {{img.width}}</p>
+    <p>Original Height: {{img.height}}</p>
+    <button mat-button (click)="showRgb()">Change Image Position and Scale</button>
 </div>
-<mat-card *ngIf="changeRgb" class="rgbBars">
+
+<mat-card class="resizeBars" *ngIf="changeRgb" style="width: 450px">
+    <mat-card-header>
+        <mat-card-title>Resize Image</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="head1">
+            <div class="cell50">
+                <p>Position</p>
+            </div>
+            <div class="cell50">
+                <p>Scale</p>
+                <mat-checkbox style="font-weight:normal" [(ngModel)]="keepAspectRatio">Keep aspect Ratio</mat-checkbox>
+            </div>
+            <div class="cell25">
+                <p>X axis</p>
+            </div>
+            <div class="cell25">
+                <p>Y Axis</p>
+            </div>
+            <div class="cell25">
+                <p>Height</p>
+            </div>
+            <div class="cell25">
+                <p>Width</p>
+            </div>
+        </div>
+        <div class="head1">
+            <div class="cell25">
+                <mat-slider class="slider" id="xPositionSlider" [max]="img.width" [min]="0" [(ngModel)]="xPosSlider" thumbLabel (change)="updatePositionScale()"></mat-slider>
+            </div>
+            <div class="cell25">
+                <mat-slider class="slider" id="yPositionSlider" [vertical]="true" [max]="img.height" [min]="0" [(ngModel)]="yPosSlider" thumbLabel (change)="updatePositionScale()"></mat-slider>
+
+            </div>
+            <div class="cell25">
+                <mat-slider class="slider" id="yScaleSlider" [vertical]="true" [max]="img.height" [min]="200" [(ngModel)]="yScaleSlider" thumbLabel (change)="updatePositionScale()"></mat-slider>
+            </div>
+            <div class="cell25">
+                <mat-slider class="slider" id="xScaleSlider" [max]="img.width" [min]="200" [(ngModel)]="xScaleSlider" thumbLabel (change)="updatePositionScale()"></mat-slider>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button (click)="applyRgb()">
+    <mat-icon class="md-18">done</mat-icon>APPLY</button>
+        <button mat-raised-button (click)="cancelRgb()"><mat-icon class="md-18">cancel</mat-icon> CANCEL</button>
+    </mat-card-actions>
+</mat-card>
+
+
+<mat-card *ngIf="false" class="rgbBars">
     <mat-card-header>
         <mat-card-title>RGB Values</mat-card-title>
         <mat-card-subtitle>

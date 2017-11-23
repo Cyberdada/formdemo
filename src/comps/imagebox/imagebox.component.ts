@@ -1,9 +1,8 @@
 import { Component, Input, ViewChild, ElementRef, OnInit,
   AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
-import { MatList, MatListItem, MatButton, MatIcon } from '@angular/material';
-import {MatCard} from '@angular/material/card';
-import {MatSlider} from '@angular/material/slider';
+import { MatList, MatListItem, MatButton, MatIcon, MatCheckbox, MatCard, MatSlider, MatGridList } from '@angular/material';
+
 
 import {defaultEmptyImage} from './emptyimage';
 // TODO
@@ -36,14 +35,18 @@ export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccesso
   private imageValue: string;
   private canvas: any;
   private context: CanvasRenderingContext2D;
-  private img: HTMLImageElement;
-  private imageData: ImageData;
+   private imageData: ImageData;
   private tempData: ImageData;
+  img: HTMLImageElement;
 
   rgbSliders = [0, 0, 0];
-
+  xPosSlider = 0;
+  yPosSlider = 0;
+  xScaleSlider = 0;
+  yScaleSlider = 0;
   changed = false;
   changeRgb = false;
+  keepAspectRatio = false;
 
   constructor() {}
 
@@ -94,6 +97,9 @@ export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccesso
     return false;
   }
 
+  eatKey(event: any) {
+    console.log(event);
+  }
 
 // Rgb related stuff
 showRgb() {
@@ -117,6 +123,13 @@ updateColor() {
           }
           this.context.putImageData(this.imageData, 0, 0);
 }
+
+
+updatePositionScale() {
+  this.context.drawImage(this.img, this.xPosSlider, this.yPosSlider, this.yScaleSlider, this.xScaleSlider,  0, 0, this.width, this.height);
+}
+
+
 
 applyRgb() {
   this.imageValue = this.canvas.toDataURL(this.resImageType, this.resQuality);
