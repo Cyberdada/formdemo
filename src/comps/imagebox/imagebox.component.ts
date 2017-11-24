@@ -1,10 +1,12 @@
-import { Component, Input, ViewChild, ElementRef, OnInit,
-  AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component, Input, ViewChild, ElementRef, OnInit,
+  AfterViewInit, OnChanges, SimpleChanges
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
-import { MatList, MatListItem, MatButton, MatIcon, MatCheckbox, MatCard, MatSlider, MatGridList } from '@angular/material';
+import { MatList, MatListItem, MatButton, MatIcon, MatCheckbox, MatCard } from '@angular/material';
 
 
-import {defaultEmptyImage} from './emptyimage';
+import { defaultEmptyImage } from './emptyimage';
 // TODO
 // Add resize/ cropping
 // see
@@ -22,10 +24,10 @@ import {defaultEmptyImage} from './emptyimage';
     { provide: NG_VALUE_ACCESSOR, useExisting: ImageboxComponent, multi: true }
   ]
 })
-export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccessor, AfterViewInit  {
+export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccessor, AfterViewInit {
   @Input() emptyImage = defaultEmptyImage;
-  @Input() width =  200;
-  @Input() height =  200;
+  @Input() width = 200;
+  @Input() height = 200;
   @Input() resImageType = 'image/jpeg';
   @Input() resQuality = .82;
 
@@ -35,20 +37,20 @@ export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccesso
   private imageValue: string;
   private canvas: any;
   private context: CanvasRenderingContext2D;
-   private imageData: ImageData;
+  private imageData: ImageData;
   private tempData: ImageData;
   img: HTMLImageElement;
 
-  rgbSliders = [0, 0, 0];
-  xPosSlider = 0;
-  yPosSlider = 0;
-  xScaleSlider = 0;
-  yScaleSlider = 0;
+  xPos = 0;
+  yPos = 0;
+  minScale = 1;
+  maxScale = 3;
+  scale = 3;
+  scaleStep = 0.1;
+  originIsSmaller = false;
   changed = false;
-  changeRgb = false;
-  keepAspectRatio = false;
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
     this.img = new Image();
@@ -62,6 +64,7 @@ export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccesso
     this.img.src = this.emptyImage;
     this.draw();
   }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['userImage'] && changes['userImage'].firstChange === false) {
       this.img.src = changes['userImage'].currentValue;
@@ -80,69 +83,59 @@ export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccesso
     reader.onload = (e: Event) => {
       const target: any = e.target;
       this.img.src = target.result;
-
       this.img.onload = () => {
-         this.context.clearRect(0, 0,  this.width, this.height);
-         this.context.drawImage(this.img, 0, 0, this.width, this.height);
-
+        this.calculateScale();
+        this.xPos = 0;
+        this.yPos = 0;
+        this.scale = this.maxScale;
+        this.updatePositionScale();
         // Need to clean out files from file input,
         // otherwise file dialog will not appear after backtracking
         this.fileInputRef.nativeElement.value = '';
         this.imageValue = this.canvas.toDataURL(this.resImageType, this.resQuality);
-        this.propagateChange( this.imageValue);
+        this.propagateChange(this.imageValue);
         this.imageData = this.context.getImageData(0, 0, this.width, this.height);
-
-      };
+        };
     };
     return false;
+  }
+
+  calculateScale() {
+    // Computation does not take into account images that have extremly uneven x / y values
+    // (ie height of 100 and width of 1000)
+    const xscale = this.img.height / this.height;
+    const yscale = this.img.width / this.width;
+
+    this.maxScale = xscale <= yscale ? xscale : yscale;
+
+    this.originIsSmaller = this.maxScale < 1 ? true : false;
+
+    if (this.originIsSmaller) {
+      this.maxScale = 1 / this.maxScale;
+    }
+    this.minScale = this.maxScale / 3;
+    this.scaleStep = (this.maxScale - this.minScale) / 100;
   }
 
   eatKey(event: any) {
     console.log(event);
   }
 
-// Rgb related stuff
-showRgb() {
-  // need this to be able to alter the image without messing with the original.
-  // note if not explicitly copying the array, the original will be messed up, thus the slice
-  this.tempData = new ImageData( this.imageData.data.slice(0), this.imageData.width, this.imageData.height );
-  this.rgbSliders.fill(0);
-  this.changeRgb = true;
-}
+  setDestCoords() {
+    return this.originIsSmaller
+      ? { sWidth: this.img.width, sHeight: this.img.height, dWidth: this.img.width * this.scale, dHeight: this.img.height * this.scale }
+      : { dWidth: this.img.width, dHeight: this.img.height, sWidth: this.img.width * this.scale, sHeight: this.img.height * this.scale };
+  }
 
-cancelRgb() {
-  this.changeRgb = false;
-   this.resetSliders();
-}
+  updatePositionScale() {
+    this.context.clearRect(0, 0, this.width, this.height);
+    const coords = this.setDestCoords();
+    this.context.drawImage(this.img, this.xPos, this.yPos, coords.sWidth, coords.sHeight,
+      0, 0, coords.dWidth, coords.dHeight);
 
-updateColor() {
-  for (let i = 0; i < this.width * this.height * 4; i += 4) {
-            this.imageData.data[i] = this.tempData.data[i] + this.rgbSliders[0];
-            this.imageData.data[i + 1] = this.tempData.data[i + 1] + this.rgbSliders[1];
-            this.imageData.data[i + 2] =  this.tempData.data[i + 2] + this.rgbSliders[2];
-          }
-          this.context.putImageData(this.imageData, 0, 0);
-}
-
-
-updatePositionScale() {
-  this.context.drawImage(this.img, this.xPosSlider, this.yPosSlider, this.yScaleSlider, this.xScaleSlider,  0, 0, this.width, this.height);
-}
-
-
-
-applyRgb() {
-  this.imageValue = this.canvas.toDataURL(this.resImageType, this.resQuality);
-  this.propagateChange( this.imageValue);
-  this.imageData = this.context.getImageData(0, 0, this.width, this.height);
-  this.changeRgb = false;
-}
-resetSliders() {
-  this.rgbSliders.fill(0);
-  this.updateColor();
-}
-
-// end RgbRelated stuff
+    this.imageValue = this.canvas.toDataURL(this.resImageType, this.resQuality);
+    this.propagateChange(this.imageValue);
+  }
 
   backtrack() {
     this.draw();
@@ -150,26 +143,18 @@ resetSliders() {
     this.imageValue = '';
     this.changed = false;
     this.propagateChange(this.imageValue);
-    this.changeRgb = false;
   }
 
   draw() {
     this.img.onload = () => {
-      this.context.clearRect(0, 0,  this.width, this.height);
+      this.context.clearRect(0, 0, this.width, this.height);
       this.context.drawImage(this.img, 0, 0);
     };
   }
 
-
   // Form Control Code
-  writeValue(value: any) {
-    this.img.src = value;
-  }
-  propagateChange = (_: any) => {};
-
-  registerOnChange(fn) {
-    this.propagateChange = fn;
-  }
-
-  registerOnTouched() {}
+  writeValue(value: any) { this.img.src = value; }
+  propagateChange = (_: any) => { };
+  registerOnChange(fn) { this.propagateChange = fn; }
+  registerOnTouched() { }
 }

@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -10,6 +10,7 @@ import { MatListModule, MatButtonModule, MatIconModule, MatLineModule, MatInputM
   import {MatSliderModule} from '@angular/material/slider';
   import {MatCardModule} from '@angular/material/card';
   import {MatGridListModule} from '@angular/material/grid-list';
+  import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { UserComponent } from './user/user.component';
 
@@ -27,7 +28,6 @@ import { ParametersComponent } from '../comps/parameters/parameters.component';
   ],
   imports: [
     HttpClientModule,
-    BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
@@ -42,7 +42,8 @@ import { ParametersComponent } from '../comps/parameters/parameters.component';
     MatButtonToggleModule,
     MatAutocompleteModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    BrowserModule,
 
   ],
 
