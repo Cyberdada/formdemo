@@ -3,10 +3,30 @@ import {
   AfterViewInit, OnChanges, SimpleChanges
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
-import { MatList, MatListItem, MatButton, MatIcon, MatCheckbox, MatCard } from '@angular/material';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/switchMapTo';
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/combineLatest';
+import 'rxjs/add/operator/startWith';
 
+import { MatList, MatListItem, MatButton, MatIcon, MatCheckbox, MatCard } from '@angular/material';
+import {
+  DOWN_ARROW,
+  END,
+  HOME,
+  LEFT_ARROW,
+  PAGE_DOWN,
+  PAGE_UP,
+  RIGHT_ARROW,
+  UP_ARROW,
+} from '@angular/cdk/keycodes';
 
 import { defaultEmptyImage } from './emptyimage';
+
 // TODO
 // Add resize/ cropping
 // see
@@ -49,7 +69,7 @@ export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccesso
   scaleStep = 0.1;
   originIsSmaller = false;
   changed = false;
-
+  dragSubscription: Subscription;
   constructor() { }
 
   ngOnInit() {
@@ -58,6 +78,29 @@ export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccesso
     this.canvas.width = this.width;
     this.canvas.height = this.height;
     this.context = this.canvas.getContext('2d');
+   // const each100MilliSecond$ = Observable.interval(600);
+    const mouseDown$ = Observable.fromEvent(this.canvas, 'mousedown');
+    const mouseMove$ = Observable.fromEvent(this.canvas, 'mousemove');
+    const mouseUp$ = Observable.fromEvent(this.canvas, 'mouseup');
+
+    const mousedrag$ =  mouseDown$.flatMap(function (md: MouseEvent) {
+
+            const startX = md.clientX, startY  = md.clientY;
+            return mouseMove$.map(function (mm: any) {
+              mm.preventDefault();
+              return {
+                left:  startX - mm.clientX ,
+                top: startY - mm.clientY
+              };
+            }).takeUntil(mouseUp$);
+          });
+
+this.dragSubscription = mousedrag$.subscribe(event => {
+  this.xPos =  this.xPos  +  (event.left / 4) ;
+  this.yPos =  this.yPos  + (event.top / 4) ;
+  this.updatePositionScale();
+
+});
   }
 
   ngAfterViewInit() {
@@ -95,12 +138,39 @@ export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccesso
         this.imageValue = this.canvas.toDataURL(this.resImageType, this.resQuality);
         this.propagateChange(this.imageValue);
         this.imageData = this.context.getImageData(0, 0, this.width, this.height);
-        };
+      };
     };
     return false;
   }
 
-  calculateScale() {
+  backtrack() {
+    this.draw();
+    this.img.src = this.emptyImage;
+    this.imageValue = '';
+    this.changed = false;
+    this.propagateChange(this.imageValue);
+  }
+
+  updatePositionScale() {
+    this.context.clearRect(0, 0, this.width, this.height);
+    const coords = this.setDestCoords();
+    this.context.drawImage(this.img, this.xPos, this.yPos, coords.sWidth, coords.sHeight,
+      0, 0, coords.dWidth, coords.dHeight);
+
+    this.imageValue = this.canvas.toDataURL(this.resImageType, this.resQuality);
+    this.propagateChange(this.imageValue);
+  }
+
+  private setDestCoords() {
+    return this.originIsSmaller
+      ? { sWidth: this.img.width, sHeight: this.img.height, dWidth: this.img.width * this.scale, dHeight: this.img.height * this.scale }
+      : { dWidth: this.img.width, dHeight: this.img.height, sWidth: this.img.width * this.scale, sHeight: this.img.height * this.scale };
+  }
+
+
+
+
+  private calculateScale() {
     // Computation does not take into account images that have extremly uneven x / y values
     // (ie height of 100 and width of 1000)
     const xscale = this.img.height / this.height;
@@ -117,33 +187,42 @@ export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccesso
     this.scaleStep = (this.maxScale - this.minScale) / 100;
   }
 
-  eatKey(event: any) {
-    console.log(event);
+  eatMousewheel(event: MouseWheelEvent) {
+    switch (event.deltaY) {
+      case 100:
+        this.scale += this.scaleStep * 3;
+        break;
+      case -100:
+        this.scale -= this.scaleStep * 3;
+        break;
+    }
+
+    this.updatePositionScale();
   }
 
-  setDestCoords() {
-    return this.originIsSmaller
-      ? { sWidth: this.img.width, sHeight: this.img.height, dWidth: this.img.width * this.scale, dHeight: this.img.height * this.scale }
-      : { dWidth: this.img.width, dHeight: this.img.height, sWidth: this.img.width * this.scale, sHeight: this.img.height * this.scale };
+
+  eatKey(event: KeyboardEvent) {
+
+    switch (event.keyCode) {
+      case UP_ARROW:
+        this.yPos += 5;
+        this.updatePositionScale();
+        break;
+      case DOWN_ARROW:
+        this.yPos -= 5;
+        this.updatePositionScale();
+        break;
+      case LEFT_ARROW:
+        this.xPos += 5;
+        this.updatePositionScale();
+        break;
+      case RIGHT_ARROW:
+        this.xPos -= 5;
+        this.updatePositionScale();
+        break;
+    }
   }
 
-  updatePositionScale() {
-    this.context.clearRect(0, 0, this.width, this.height);
-    const coords = this.setDestCoords();
-    this.context.drawImage(this.img, this.xPos, this.yPos, coords.sWidth, coords.sHeight,
-      0, 0, coords.dWidth, coords.dHeight);
-
-    this.imageValue = this.canvas.toDataURL(this.resImageType, this.resQuality);
-    this.propagateChange(this.imageValue);
-  }
-
-  backtrack() {
-    this.draw();
-    this.img.src = this.emptyImage;
-    this.imageValue = '';
-    this.changed = false;
-    this.propagateChange(this.imageValue);
-  }
 
   draw() {
     this.img.onload = () => {

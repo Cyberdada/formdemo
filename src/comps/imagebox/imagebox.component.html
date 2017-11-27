@@ -7,18 +7,15 @@
             <mat-icon   class="md-18">cancel</mat-icon></label>
         </a>
     </div>
-    <canvas #theCanvas tabindex="1" (keydown)="eatKey($event)" (mousemove)="eatKey($event)" (mousewheel)="eatKey($event)" style="border:solid; float:left;"></canvas>
-    <mat-slider style="float:left;" [vertical]="true" [max]="img.height" [min]="0" [ngStyle]="{'height.px':height}" [(ngModel)]="yPos" thumbLabel (change)="updatePositionScale()"></mat-slider>
-    <mat-slider [vertical]="true" [max]="maxScale" [min]="minScale" [step]="scaleStep" [invert]="true" [ngStyle]="{'height.px':height}" [(ngModel)]="scale" (change)="updatePositionScale()"></mat-slider>
-
-    <div style="width: 100%">
-        <mat-slider [max]="img.width" [min]="0" [(ngModel)]="xPos" [invert]="true" [ngStyle]="{'width.px':width}" (change)="updatePositionScale()"></mat-slider>
-    </div>
+    <canvas #theCanvas tabindex="1" (keydown)="eatKey($event)" (mousewheel)="eatMousewheel($event)" style="border:solid; float:left;"></canvas>
+    <mat-slider [vertical]="true " [max]="maxScale " [min]="minScale " [step]="scaleStep " [invert]="true " [ngStyle]="{ 'height.px':height} " [(ngModel)]="scale " (change)="updatePositionScale() "></mat-slider>
 </div>
 
 
 
-<div *ngIf="changed && !changeRgb">
+<div *ngIf="changed && !changeRgb ">
     <p>Original Width: {{img.width}}</p>
     <p>Original Height: {{img.height}}</p>
+    <p>x: {{xPos}}</p>
+    <p>y {{yPos}}</p>
 </div>
