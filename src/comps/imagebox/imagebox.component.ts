@@ -96,10 +96,11 @@ export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccesso
           });
 
 this.dragSubscription = mousedrag$.subscribe(event => {
+  if (this.changed) {
   this.xPos =  this.xPos  +  (event.left / 4) ;
   this.yPos =  this.yPos  + (event.top / 4) ;
   this.updatePositionScale();
-
+}
 });
   }
 
@@ -188,6 +189,7 @@ this.dragSubscription = mousedrag$.subscribe(event => {
   }
 
   eatMousewheel(event: MouseWheelEvent) {
+    if (this.changed) {
     switch (event.deltaY) {
       case 100:
         this.scale += this.scaleStep * 3;
@@ -196,13 +198,13 @@ this.dragSubscription = mousedrag$.subscribe(event => {
         this.scale -= this.scaleStep * 3;
         break;
     }
-
     this.updatePositionScale();
+  }
   }
 
 
   eatKey(event: KeyboardEvent) {
-
+    if (this.changed) {
     switch (event.keyCode) {
       case UP_ARROW:
         this.yPos += 5;
@@ -221,6 +223,7 @@ this.dragSubscription = mousedrag$.subscribe(event => {
         this.updatePositionScale();
         break;
     }
+  }
   }
 
 
