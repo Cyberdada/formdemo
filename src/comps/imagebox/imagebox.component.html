@@ -10,12 +10,3 @@
     <canvas #theCanvas tabindex="1" (keydown)="eatKey($event)" (mousewheel)="eatMousewheel($event)" style="border:solid; float:left;"></canvas>
     <mat-slider [vertical]="true " [disabled]="!changed" [max]="maxScale " [min]="minScale " [step]="scaleStep " [invert]="true " [ngStyle]="{ 'height.px':height} " [(ngModel)]="scale " (change)="updatePositionScale() "></mat-slider>
 </div>
-
-
-
-<div *ngIf="changed && !changeRgb ">
-    <p>Original Width: {{img.width}}</p>
-    <p>Original Height: {{img.height}}</p>
-    <p>x: {{xPos}}</p>
-    <p>y {{yPos}}</p>
-</div>
