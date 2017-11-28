@@ -8,22 +8,10 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
-
 import 'rxjs/add/operator/takeUntil';
 
-
-
 import { MatList, MatListItem, MatButton, MatIcon, MatCheckbox, MatCard } from '@angular/material';
-import {
-  DOWN_ARROW,
-  END,
-  HOME,
-  LEFT_ARROW,
-  PAGE_DOWN,
-  PAGE_UP,
-  RIGHT_ARROW,
-  UP_ARROW,
-} from '@angular/cdk/keycodes';
+import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 
 import { defaultEmptyImage } from './emptyimage';
 
@@ -76,6 +64,7 @@ export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccesso
   originIsSmaller = false;
   changed = false;
   dragSubscription: Subscription;
+
   constructor() { }
 
   ngOnInit() {
@@ -206,7 +195,6 @@ export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccesso
       this.updatePositionScale();
     }
   }
-
 
   eatKey(event: KeyboardEvent) {
     if (this.changed) {
