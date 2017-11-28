@@ -98,6 +98,10 @@ export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccesso
     });
   }
 
+  sliderChanged(event) {
+    this.scale = event.value;
+    this.updatePositionScale();
+  }
   ngAfterViewInit() {
     this.img.src = this.emptyImage;
     this.draw();
@@ -126,14 +130,13 @@ export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccesso
         this.xPos = 0;
         this.yPos = 0;
         this.scale = this.maxScale;
-        this.updatePositionScale();
         // Need to clean out files from file input,
         // otherwise file dialog will not appear after backtracking
         this.fileInputRef.nativeElement.value = '';
-        this.imageValue = this.canvas.toDataURL(this.resImageType, this.resQuality);
-        this.propagateChange(this.imageValue);
+        this.updatePositionScale();
         this.imageData = this.context.getImageData(0, 0, this.width, this.height);
         this.originSize.emit({ width: this.img.width, height: this.img.height });
+        this.position.emit({ x: this.xPos, y: this.yPos });
       };
     };
     return false;
@@ -155,7 +158,7 @@ export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccesso
 
     this.imageValue = this.canvas.toDataURL(this.resImageType, this.resQuality);
     this.propagateChange(this.imageValue);
-    this.position.emit({ x: this.xPos, y: this.yPos });
+
   }
 
   private setDestCoords() {
@@ -202,6 +205,7 @@ export class ImageboxComponent implements OnInit, OnChanges, ControlValueAccesso
       if (movement) {
         this.xPos += movement.x;
         this.yPos += movement.y;
+        this.position.emit({ x: this.xPos, y: this.yPos });
         this.updatePositionScale();
       }
     }
