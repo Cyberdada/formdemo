@@ -51,7 +51,7 @@ export class GrouptogglerComponent implements OnInit, ControlValueAccessor {
   // Form Control Code
   writeValue(val: ToggleItem[]) {
     this.toggleItems = val;
-    const p  = this.toggleItems.map(itm => this.fb.group({ id: 0, role: itm.role , extId: itm.extId }));
+    const p  = this.toggleItems.map(itm => this.fb.group({ id: itm.id, role: itm.role , extId: itm.extId }));
     this.toggler.setControl('roles', this.fb.array(p));
   }
 
