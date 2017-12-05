@@ -13,6 +13,10 @@ There are three components:
 -GroupToggler
 -Parameters
 
+### Imagebox 
+Imagebox lets you upload an image to the client, and select what part of the image you want to uppload. 
+
+
 ### Imagebox API
 
 **INPUT**
@@ -39,5 +43,36 @@ Image can be moved within in the given frame with keyboard arrows and with the m
 The image can also be scaled, either with the slider, or with 
 the mousewheel
 
-The other controls are pretty self explanatory, 
+
+### Grouptoggler
+Grouptoggler is control that can be used for dialogs involving 1:M scenarios. 
+Example : User is part of 100 projects, in the 100 projects he has different roles. 
+With the grouptoggler you can easily list all projects and make end user "toggle" between the
+different user rights. 
+
+### Grouptoggler API
+
+**INPUT** 
+**toggleValues**: An array of objects that use the namevalue interface (name:string, value:string) 
+these are the values that the end user can choose between (ex, none, editor, admin)
+fieldWidth : the default width for each field. 
+**width**: the total width of the control
+**rowsHeight** : The height of the rows. Defaults to 300. If more rows then height, then a scrollbar will be shown. 
+**headers** : The headers to show on top of the control, defaults to ["Name", "Role"]
+**fields** : The fields to show for each item , defaults to ["Name"]
+value: ToogleItems - All the items to be shown in the list. (The value given to the control)
+Items must use this interface: 
+id,  (the id of the row)
+role,  (the role (which of the toogge values this object has))
+extId - ( the Id of the object that this object has the relation specified in role )
+
+Items should also include the properties specified in the fields. 
+
+
+
+###Parameters
+Parameters is an array of parameters. Its currently the least developed component.  
 just run the application, and you will be able to figure them out. 
+
+
+The initial decision to use material can be a bit of a double edged sword, as the project using these components, might not want to use material. Im thinking of building an 'unmaterial' version of the components, but that will be in a later stage. 

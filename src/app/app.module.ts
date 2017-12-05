@@ -5,8 +5,7 @@ import { NgModule } from '@angular/core';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MatListModule, MatButtonModule, MatIconModule, MatLineModule, MatInputModule,
-  MatButtonToggleModule,  MatAutocompleteModule, MatSelectModule,
-  MatCheckboxModule} from '@angular/material';
+  MatButtonToggleModule,  MatAutocompleteModule, MatSelectModule} from '@angular/material';
   import {MatSliderModule} from '@angular/material/slider';
   import {MatCardModule} from '@angular/material/card';
   import {MatGridListModule} from '@angular/material/grid-list';
@@ -42,7 +41,6 @@ import { ParametersComponent } from '../comps/parameters/parameters.component';
     MatButtonToggleModule,
     MatAutocompleteModule,
     MatSelectModule,
-    MatCheckboxModule,
     BrowserModule,
 
   ],

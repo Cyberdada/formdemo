@@ -1,18 +1,17 @@
 <mat-list [formGroup]="toggler" [ngStyle]="{'width.px':width}">
     <mat-list-item class="listheader">
-        <p [ngStyle]="{'min-width.px': nameWidth}">Name</p>
-        <p [ngStyle]="{'min-width.px': nameWidth}">Role</p>
+        <p *ngFor="let name of headers" [ngStyle]="{'min-width.px': fieldWidth}">{{name}}</p>
     </mat-list-item>
     <mat-list-item>
-        <mat-button-toggle-group #group="matButtonToggleGroup" class="head" [ngStyle]="{'padding-left.px': nameWidth + 16}" (change)="allRoles($event.value)">
+        <mat-button-toggle-group #group="matButtonToggleGroup" class="head" [ngStyle]="{'padding-left.px': fieldWidth + 16}" (change)="allRoles($event.value)">
             <mat-button-toggle *ngFor="let itm of toggleValues" [value]="itm.value">
                 {{itm.name}}
             </mat-button-toggle>
         </mat-button-toggle-group>
     </mat-list-item>
-    <div class="rows" formArrayName="roles">
+    <div class="rows" formArrayName="roles" [ngStyle]="{'height.px':rowsHeight}">
         <mat-list-item *ngFor="let role of formRoles.controls;let i=index" [formGroupName]="i">
-            <p [ngStyle]="{'min-width.px': nameWidth}">{{toggleItems[i].name}}</p>
+            <p *ngFor="let field of fields" [ngStyle]="{'min-width.px': fieldWidth}">{{toggleItems[i][field]}}</p>
             <mat-button-toggle-group #group="matButtonToggleGroup" formControlName="role" class="row">
                 <mat-button-toggle *ngFor="let itm of toggleValues" [value]="itm.value">
                     {{itm.name}}

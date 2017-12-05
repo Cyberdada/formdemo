@@ -1,16 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChange } from '@angular/core';
-import { NameValue } from '../../app/name-value';
 import {
   FormArray, FormControl, FormGroup, FormBuilder, Validators,
   ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule
 } from '@angular/forms';
 
-export interface ToggleItem {
-  id: number;
-  role: string;
-  extId: number;
-  name: string;
-}
+import {NameValue} from '../../app/name-value';
+import {ToggleItem} from './toggle-item.model';
+
 
 @Component({
   selector: 'app-grouptoggler',
@@ -22,15 +18,19 @@ export interface ToggleItem {
 })
 export class GrouptogglerComponent implements OnInit, ControlValueAccessor {
   @Input() toggleValues: NameValue[];
-  @Input() nameWidth = 140;
-  @Input() width= 410;
+  @Input() fieldWidth = 140;
+  @Input() width= 390;
+  @Input() rowsHeight = 300;
+  @Input() headers = ['Name', 'Role'];
+  @Input() fields = ['name'];
   toggleItems: ToggleItem[] = [];
   toggler: FormGroup;
   constructor(private fb: FormBuilder) { }
+
   ngOnInit() {
     this.createForm();
+    this.toggler.valueChanges.subscribe( itm => {console.log(itm)});
   }
-
 
 
   allRoles(nr: string) {
