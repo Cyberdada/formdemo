@@ -53,24 +53,33 @@ different user rights.
 ### Grouptoggler API
 
 **INPUT** 
+
 **toggleValues**: An array of objects that use the namevalue interface (name:string, value:string) 
 these are the values that the end user can choose between (ex, none, editor, admin)
 fieldWidth : the default width for each field. 
-**width**: the total width of the control
+
+**width**: the total width of the control. 
+
 **rowsHeight** : The height of the rows. Defaults to 300. If more rows then height, then a scrollbar will be shown. 
-**headers** : The headers to show on top of the control, defaults to ["Name", "Role"]
+
+**headers** : The headers to show on top of the control, defaults to ["Name", "Role"] 
+
 **fields** : The fields to show for each item , defaults to ["Name"]
 value: ToogleItems - All the items to be shown in the list. (The value given to the control)
 Items must use this interface: 
-id,  (the id of the row)
-role,  (the role (which of the toogge values this object has))
+
+id,  (the id of the row) 
+
+role,  (the role (which of the toogle values this object has)) 
+
 extId - ( the Id of the object that this object has the relation specified in role )
+
 
 Items should also include the properties specified in the fields. 
 
 
 
-###Parameters
+###Parameters 
 Parameters is an array of parameters. Its currently the least developed component.  
 just run the application, and you will be able to figure them out. 
 
