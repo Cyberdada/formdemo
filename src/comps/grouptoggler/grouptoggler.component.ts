@@ -7,6 +7,9 @@ import {
 import {NameValue} from '../../app/name-value';
 import {ToggleItem} from './toggle-item.model';
 
+interface Iwidth {
+  width: number;
+}
 
 @Component({
   selector: 'app-grouptoggler',
@@ -17,11 +20,10 @@ import {ToggleItem} from './toggle-item.model';
   ]
 })
 export class GrouptogglerComponent implements OnInit, ControlValueAccessor {
-  @Input() toggleValues: NameValue[];
-  @Input() fieldWidth = 140;
-  @Input() width= 390;
+  @Input() toggleValues: NameValue[] = [{name: 'None', value: 0 }, {name: 'Editor', value: 1 }, {name: 'Admin', value: 2 } ];
+  @Input() width= -1;
   @Input() rowsHeight = 300;
-  @Input() headers = ['Name', 'Role'];
+  @Input() headers = [{name: 'Name', width: 140} , {name: 'Role', width: 0}];
   @Input() fields = ['name'];
   toggleItems: ToggleItem[] = [];
   toggler: FormGroup;
@@ -29,13 +31,25 @@ export class GrouptogglerComponent implements OnInit, ControlValueAccessor {
 
   ngOnInit() {
     this.createForm();
-    this.toggler.valueChanges.subscribe( itm => {console.log(itm)});
   }
 
+calcWidth() {
+  const DEFAULT_TOGGLEBUTTON_LENGTH = 80;
+
+  return this.width > -1
+    ? this.width
+    : this.toptogglePadding() + (this.toggleValues.length * DEFAULT_TOGGLEBUTTON_LENGTH );
+
+}
+
+  toptogglePadding() {
+    const DEFAULT_HEAD_LEFTMARGIN = 16;
+
+    return this.headers.reduce(( tutti: number, b: Iwidth) => tutti + b.width, 0) + DEFAULT_HEAD_LEFTMARGIN;
+  }
 
   allRoles(nr: string) {
-    this.formRoles.controls.forEach(
-      itm => (itm as FormGroup).controls['role'].setValue(nr) );
+    this.formRoles.controls.forEach( itm => (itm as FormGroup).controls['role'].setValue(nr) );
   }
 
   createForm() {
