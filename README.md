@@ -56,19 +56,23 @@ different user rights.
 
 **toggleValues**: An array of objects that use the namevalue interface (name:string, value:string) 
 these are the values that the end user can choose between (ex, none, editor, admin) 
-It defaults to : 
+It defaults to :  
+
 [{name: 'None', value: 0 }, {name: 'Editor', value: 1 }, {name: 'Admin', value: 2 } ];
 
 
-**width**: The total width of the control. If set to -1 width will be calculated with the following formula: 
-Width of all fields before buttons + DEFAULT_HEAD_LEFTMARGIN (16px) + (DEFAULT_TOGGLEBUTTON_LENGTH * Nr of togglebuttons) 
-where  DEFAULT_TOGGLEBUTTON_LENGTH is set to 80 
-default value is -1
+**width**: The total width of the control. If set to -1 width will be calculated with the following formula:  
+
+Width of all fields before buttons + DEFAULT_HEAD_LEFTMARGIN (16px) + (DEFAULT_TOGGLEBUTTON_LENGTH (80) * Nr of togglebuttons)  
+
+default value of width is -1
 
 **rowsHeight** : The height of the rows. Defaults to 300. If more rows then height, then a scrollbar will be shown. 
 
-**headers** : The headers to show on top of the control, defaults to
-[{name: 'Name', width: 140} , {name: 'Role', width: 0}];
+**headers** : The headers to show on top of the control, defaults to  
+
+[{name: 'Name', width: 140} , {name: 'Role', width: 0}];  
+
 note the width is used to set the with for each column except for the last one, 
 because the last column contains the togglebuttons, 
 but the width number there is used when calculating the total width of the control, so if you want to offset that, 
