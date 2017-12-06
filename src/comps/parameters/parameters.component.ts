@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import {
   FormArray, FormControl, FormBuilder, FormGroup, Validators,
   ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormsModule, AbstractControl
 } from '@angular/forms';
 
-import {
-  MatList, MatListItem, MatButton, MatIcon, MatRadioGroup, MatRadioButton,
-  MatButtonToggleGroup, MatButtonToggle
-} from '@angular/material';
-import { Validator } from '@angular/forms/src/directives/validators';
 
+import { Validator } from '@angular/forms/src/directives/validators';
+import {NameValue} from '../../app/name-value';
 
 @Component({
   selector: 'app-parameters',
@@ -21,7 +18,7 @@ import { Validator } from '@angular/forms/src/directives/validators';
   ]
 })
 export class ParametersComponent implements OnInit, ControlValueAccessor, Validator {
-
+ @Input() paramTypes: NameValue[] = [{name: 'Number', value: 0 }, {name: 'String', value: 1 }, {name: 'Object', value: 2 }  ];
   paramGroup: FormGroup;
   constructor(private fb: FormBuilder) { }
 
@@ -49,6 +46,10 @@ export class ParametersComponent implements OnInit, ControlValueAccessor, Valida
 
   }
 
+  typeByValue(nr: number) {
+    return this.paramTypes.find(itm => itm.value === nr);
+  }
+
   removeParameter(ix: number) {
     this.formParameters.removeAt(ix);
   }
@@ -58,15 +59,21 @@ export class ParametersComponent implements OnInit, ControlValueAccessor, Valida
   }
 
   paraDisplay(itm: any): string {
-    if (itm === 0) { return 'number'; }
-    if (itm === 1) { return 'string'; }
-    if (itm === 2) { return 'boolean'; }
+    if ( isNaN(itm.value)) {return 'Not set'; }
+    return itm ? itm.name : itm;
   }
 
+  calcWidth() {
+    // Currently just adds all the css values and the adds 100 to that.
+    // A placeholder for a more intelligent function
+    return  200 + 130 + 130 + 100;
+  }
   // Form Control Code
   writeValue(val: any[]) {
+    console.log(val);
     const p = val.map(itm => this.fb.group(
-      { name: [name, Validators.required], id: itm.id, type: parseInt(itm.type, 10), value: itm.value }));
+      { name: [itm.name, Validators.required], id: itm.id, type: this.typeByValue( parseInt(itm.type, 10) ), value: itm.value }));
+      this.paramGroup.setControl('parameters', this.fb.array(p));
   }
 
   registerOnChange(fn) {

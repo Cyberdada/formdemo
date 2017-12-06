@@ -91,8 +91,20 @@ Items should also include the properties specified in the fields.
 
 
 ### Parameters 
-Parameters is an array of parameters. Its currently the least developed component.  
-just run the application, and you will be able to figure them out. 
+Parameters is used to render an arbitary array of parameters.  
+
+### Paramters API
+
+**paramTypes** What parameter types a user can select, and the corresponding value defining them  
+default Value:  NameValue[] =   
+[ {name: 'Number', value: 0 }, {name: 'String', value: 1 }, {name: 'Object', value: 2 }  ];
+
+Expects an array with the following properties: 
+id,  
+name,  
+type,  (one of the values specified in paramTypes)  
+value  
+
 
 
 The initial decision to use material can be a bit of a double edged sword, as the project using these components, might not want to use material. Im thinking of building an 'unmaterial' version of the components, but that will be in a later stage. 

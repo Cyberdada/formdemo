@@ -1,8 +1,8 @@
-<div class="contained" [formGroup]="paramGroup">
+<div [formGroup]="paramGroup" [ngStyle]="{'width.px': calcWidth()}">
     <h3>Parameters
         <button type="button" mat-mini-fab (click)="addParameter(0,'','','')">
-            <mat-icon class="md-18">add</mat-icon>
-          </button></h3>
+          <mat-icon class="md-18">add</mat-icon>
+        </button></h3>
     <mat-list class="lst">
         <mat-list-item *ngIf="formParameters.controls.length > 0" class="listheader">
             <p class="name">Name</p>
@@ -18,9 +18,7 @@
                     <input matInput type="text" placeholder="Type" formControlName="type" [matAutocomplete]="autox">
                 </mat-form-field>
                 <mat-autocomplete #autox="matAutocomplete" [displayWith]="paraDisplay">
-                    <mat-option [value]="0">number</mat-option>
-                    <mat-option [value]="1">string</mat-option>
-                    <mat-option [value]="2">boolean</mat-option>
+                    <mat-option *ngFor="let item of paramTypes" [value]="item">{{item?.name}}</mat-option>
                 </mat-autocomplete>
                 <mat-form-field floatPlaceholder="never" class="value">
                     <input matInput type="text" placeholder="Value" formControlName="value">
