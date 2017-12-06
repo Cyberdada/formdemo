@@ -62,10 +62,7 @@ It defaults to :
 
 
 **width**: The total width of the control. If set to -1 width will be calculated with the following formula:  
-
-Width of all fields before buttons + DEFAULT_HEAD_LEFTMARGIN (16px) + (DEFAULT_TOGGLEBUTTON_LENGTH (80) * Nr of togglebuttons)  
-
-default value of width is -1
+Width of all fields before buttons + DEFAULT_HEAD_LEFTMARGIN (16px) + (DEFAULT_TOGGLEBUTTON_LENGTH (80) * Nr of togglebuttons)  default value of width is -1
 
 **rowsHeight** : The height of the rows. Defaults to 300. If more rows then height, then a scrollbar will be shown. 
 
@@ -73,7 +70,7 @@ default value of width is -1
 
 [{name: 'Name', width: 140} , {name: 'Role', width: 0}];  
 
-note the width is used to set the with for each column except for the last one, 
+Note that width is used to set the with for each column except for the last one, 
 because the last column contains the togglebuttons, 
 but the width number there is used when calculating the total width of the control, so if you want to offset that, 
 you can set the last width to something else than 0 (should be 0 though :) ) 
