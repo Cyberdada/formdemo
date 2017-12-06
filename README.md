@@ -60,9 +60,10 @@ It defaults to :
 [{name: 'None', value: 0 }, {name: 'Editor', value: 1 }, {name: 'Admin', value: 2 } ];
 
 
-**width**: the total width of the control. If set to -1 width will be calculated with the following formula
-width of all fields before buttons + DEFAULT_HEAD_LEFTMARGIN (16px) + (DEFAULT_TOGGLEBUTTON_LENGTH * Nr of togglebuttons) 
+**width**: The total width of the control. If set to -1 width will be calculated with the following formula: 
+Width of all fields before buttons + DEFAULT_HEAD_LEFTMARGIN (16px) + (DEFAULT_TOGGLEBUTTON_LENGTH * Nr of togglebuttons) 
 where  DEFAULT_TOGGLEBUTTON_LENGTH is set to 80 
+default value is -1
 
 **rowsHeight** : The height of the rows. Defaults to 300. If more rows then height, then a scrollbar will be shown. 
 
