@@ -93,7 +93,7 @@ Items should also include the properties specified in the fields.
 ### Parameters 
 Parameters is used to render an arbitary array of parameters.  
 
-### Paramters API
+### Parameters API
 
 **paramTypes** What parameter types a user can select, and the corresponding value defining them  
 default Value:  NameValue[] =   
